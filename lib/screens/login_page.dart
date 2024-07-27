@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:testdb/register.dart';
 import 'package:testdb/screens/forget.dart';
 import 'package:testdb/screens/home.dart';
+import 'package:testdb/widgets/widget_form.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,8 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool rememberUser = false;
-
-  
+  final keyForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,167 +26,206 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       decoration: BoxDecoration(
         color: mycolor,
-        image: DecorationImage(image: const AssetImage("assets/images/Login.png"),
-        fit: BoxFit.cover,
-        colorFilter:ColorFilter.mode(mycolor.withOpacity(0.2), BlendMode.dstATop)
-
-        
-        ),
-        
+        image: DecorationImage(
+            image: const AssetImage("assets/images/Login.png"),
+            fit: BoxFit.cover,
+            colorFilter:
+                ColorFilter.mode(mycolor.withOpacity(0.2), BlendMode.dstATop)),
       ),
       child: Scaffold(
         backgroundColor: Colors.blue,
-        body: Stack(children: [
-          Positioned(top: 80,child: _buildTop()),
-          Positioned(bottom: 0,child: _buildBottom(), )
-
-        ],),
+        body: Stack(
+          children: [
+            Positioned(top: 80, child: _buildTop()),
+            Positioned(
+              bottom: 0,
+              child: _buildBottom(),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildTop(){
+  Widget _buildTop() {
     return SizedBox(
       width: mediaSize.width,
-      child:  const Column(
+      child: const Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.water_drop_sharp,
-          size: 100,
-          color: Color.fromARGB(255, 244, 231, 231),
+          Icon(
+            Icons.water_drop_sharp,
+            size: 100,
+            color: Color.fromARGB(255, 244, 231, 231),
           ),
-          Text("",style: TextStyle(
-            color: Color.fromARGB(31, 18, 1, 1),
-            fontWeight: FontWeight.bold,
-            fontSize: 40,
-            letterSpacing: 5
-          ),)
-
+          Text(
+            "",
+            style: TextStyle(
+                color: Color.fromARGB(31, 18, 1, 1),
+                fontWeight: FontWeight.bold,
+                fontSize: 40,
+                letterSpacing: 5),
+          )
         ],
       ),
     );
-
-
   }
-  Widget _buildBottom(){
+
+  Widget _buildBottom() {
     return SizedBox(
       width: mediaSize.width,
       child: Card(
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-
-          )
-        ),
-        child:  Padding(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        )),
+        child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: _buildForm(),
         ),
       ),
     );
-
   }
-  Widget _buildForm(){
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("ซักรีดออนไลน์",style: TextStyle(
-          color: mycolor,
-          fontSize: 32,
-          fontWeight: FontWeight.w500
-        ),
-        ),
-        Text("Please Login with your in fromation"),
-        const SizedBox(height: 60),
-        _buildGreyText("Email Address"),
-        _buildInputField(emailController),
-        const SizedBox(height: 40),
-        _buildGreyText("Password"),
-        _buildInputField(passwordController,isPassword: true),
-        const SizedBox(height:30 ),
-        _buildRememberForget(),
-        const SizedBox(height: 20),
-        _buildLoginButton(),
-        const SizedBox(height: 20),
-        _buildOtherLogin(),
-      ],
+  Widget _buildForm() {
+    return Form(
+      key: keyForm,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "ซักรีดออนไลน์",
+            style: TextStyle(
+                color: mycolor, fontSize: 32, fontWeight: FontWeight.w500),
+          ),
+
+          Text("Please Login with your in fromation"),
+
+          const SizedBox(height: 60),
+          _buildGreyText("Email Address"),
+
+          //_buildInputField(emailController),
+          WidgetForm(
+            controller: emailController,
+            validator: (p0) {
+              if (p0?.isEmpty ?? true) {
+                return 'โปรดกรอกอีเมล';
+              } else {
+                return null;
+              }
+            },
+          ),
+
+          const SizedBox(height: 40),
+          _buildGreyText("Password"),
+
+          // _buildInputField(passwordController,isPassword: true),
+          WidgetForm(
+            controller: passwordController,
+            validator: (p0) {
+              if (p0?.isEmpty ?? true) {
+                return 'โปรดกรอกรหัสผ่าน';
+              } else {
+                return null;
+              }
+            },
+          ),
+
+          const SizedBox(height: 30),
+
+          _buildRememberForget(),
+          const SizedBox(height: 20),
+          _buildLoginButton(),
+          const SizedBox(height: 20),
+          _buildOtherLogin(),
+        ],
+      ),
     );
   }
-  Widget _buildGreyText(String text){
+
+  Widget _buildGreyText(String text) {
     return Text(
       text,
       style: const TextStyle(color: Color.fromARGB(255, 44, 16, 99)),
     );
   }
-  Widget _buildInputField(TextEditingController controller,{isPassword = false}){
+
+  Widget _buildInputField(TextEditingController controller,
+      {isPassword = false}) {
     return TextField(
       controller: controller,
-      decoration:  InputDecoration(
-        suffixIcon: isPassword?Icon(Icons.remove_red_eye) : Icon(Icons.done),
+      decoration: InputDecoration(
+        suffixIcon: isPassword ? Icon(Icons.remove_red_eye) : Icon(Icons.done),
       ),
-      obscureText:  isPassword,
-
-
+      obscureText: isPassword,
     );
-
   }
-  Widget _buildRememberForget(){
+
+  Widget _buildRememberForget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [Row(
-        children: [Checkbox(value: rememberUser, onChanged: (value){
-          setState(() {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Register(),));
-            
-          });
-        
-
-
-        }),
-        
-        _buildGreyText("สมัครสมาชิก"),
-
-
-        ],
-      ),
-      TextButton(onPressed: (){
-        setState(() {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> Forget(),));
-          
-        });
-      }, child: _buildGreyText("ลืมรหัสผ่าน")),
-      
-      
-      
-      
+      children: [
+        Row(
+          children: [
+            Checkbox(
+                value: rememberUser,
+                onChanged: (value) {
+                  setState(() {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Register(),
+                        ));
+                  });
+                }),
+            _buildGreyText("สมัครสมาชิก"),
+          ],
+        ),
+        TextButton(
+            onPressed: () {
+              setState(() {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Forget(),
+                    ));
+              });
+            },
+            child: _buildGreyText("ลืมรหัสผ่าน")),
       ],
-      
-
     );
   }
-  Widget _buildLoginButton(){
+
+  Widget _buildLoginButton() {
     return ElevatedButton(
-      onPressed: (){
-        debugPrint("Email :${emailController.text}");
-        debugPrint("Password : ${passwordController.text}");
-        setState(() {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
-        });
+      onPressed: () {
+
+        if (keyForm.currentState!.validate()) {
+          
+        }
+
+
+
+
+
+        // debugPrint("Email :${emailController.text}");
+        // debugPrint("Password : ${passwordController.text}");
+        // setState(() {
+        //   Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
+        // });
       },
       style: ElevatedButton.styleFrom(
         shape: const StadiumBorder(),
         elevation: 20,
         shadowColor: mycolor,
-        minimumSize:  const Size.fromHeight(60),
+        minimumSize: const Size.fromHeight(60),
       ),
-
-     child: 
-    const Text("LOGIN"),
+      child: const Text("LOGIN"),
     );
   }
-  Widget _buildOtherLogin(){
+
+  Widget _buildOtherLogin() {
     return Center(
       child: Column(
         children: [
@@ -196,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Tab(
-                icon:Image.asset("assets/images/Login.png"),
+                icon: Image.asset("assets/images/Login.png"),
               )
             ],
           )
