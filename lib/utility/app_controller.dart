@@ -4,5 +4,7 @@ import 'package:get/get.dart';
 class AppController extends GetxController {
 
   RxList positions = <Position>[].obs;
+
+  RxInt indexBody = 0.obs;
   
 }

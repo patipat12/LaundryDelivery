@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:testdb/screens/register.dart';
 import 'package:testdb/screens/forget.dart';
-import 'package:testdb/screens/home.dart';
+import 'package:testdb/utility/app_service.dart';
 import 'package:testdb/widgets/widget_button.dart';
 import 'package:testdb/widgets/widget_form.dart';
 
@@ -200,6 +200,13 @@ class _LoginPageState extends State<LoginPage> {
         // setState(() {
         //   Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
         // });
+
+        AppServicr().processCheckLogin(email: emailController.text, password: passwordController.text);
+
+
+
+
+
       },
       style: ElevatedButton.styleFrom(
         shape: const StadiumBorder(),

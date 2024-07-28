@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -5,12 +6,54 @@ import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:testdb/models/user_model.dart';
+import 'package:testdb/screens/home.dart';
+import 'package:testdb/screens/main_home.dart';
 import 'package:testdb/utility/app_controller.dart';
 import 'package:testdb/utility/app_dialog.dart';
 import 'package:testdb/widgets/widget_button.dart';
 
 class AppServicr {
   AppController appController = Get.put(AppController());
+  Future<void> processCheckLogin({
+    required String email,
+    required String password,
+  }) async {
+    String urlApiCheckLogin =
+        'https://www.androidthai.in.th/fluttertraining/few/getEmailWhereEmail.php?isAdd=true&email=$email';
+
+    await Dio().get(urlApiCheckLogin).then(
+      (value) {
+        if (value.toString() == 'null') {
+
+
+          Get.snackbar('Email False', 'NO $email ในฐานข้อมูล',
+              backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
+        } else {}
+        for (var element in json.decode(value.data)) {
+
+          UserModel model = UserModel.fromMap(element);
+
+          if (model.password == password) {
+            //password true
+
+            Get.offAll(const MainHome());
+          } else {
+
+            Get.snackbar('Password false','Please Tye Again Passsword',backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
+            
+          }
+          
+
+
+        }
+
+
+
+
+      },
+    );
+  }
 
   Future<void> processregister({
     required String name,
@@ -29,17 +72,17 @@ class AppServicr {
 
     if (resultCheckEmail.toString() == 'null') {
       //ไม่ซ้ำ
-    String customerId = 'cus-${Random().nextInt(1000)}';
+      String customerId = 'cus-${Random().nextInt(1000)}';
 
-    String urlAppRegister = 'https://www.androidthai.in.th/fluttertraining/few/insertUser.php?isAdd=true&customerId=$customerId&address=$address&customerName=$name&lastName=$serName&phoneNumber=$phoneNumber&lat=$lat&lng=$lng&email=$email&password=$password';
+      String urlAppRegister =
+          'https://www.androidthai.in.th/fluttertraining/few/insertUser.php?isAdd=true&customerId=$customerId&address=$address&customerName=$name&lastName=$serName&phoneNumber=$phoneNumber&lat=$lat&lng=$lng&email=$email&password=$password';
 
-
-    await Dio().get(urlAppRegister).then((value) {
-      Get.back();
-      Get.snackbar('Register Success', 'Welcome to my App please Login');
-    },);
-
-
+      await Dio().get(urlAppRegister).then(
+        (value) {
+          Get.back();
+          Get.snackbar('Register Success', 'Welcome to my App please Login');
+        },
+      );
     } else {
       Get.snackbar(
         'Email ซ้ำ',
