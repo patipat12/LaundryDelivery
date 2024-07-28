@@ -95,7 +95,7 @@ class AppServicr {
 
   Future<void> processFinPosition() async {
     bool locationService = await Geolocator.isLocationServiceEnabled();
-    print('locationService  ==> $locationService');
+    print('locationService  ---> $locationService');
 
     if (locationService) {
       //open Service
