@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: mycolor, fontSize: 32, fontWeight: FontWeight.w500),
           ),
 
-          Text("Please Login with your in fromation"),
+          const Text("Please Login with your in fromation"),
 
           const SizedBox(height: 60),
           _buildGreyText("Email Address"),

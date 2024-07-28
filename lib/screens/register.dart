@@ -89,7 +89,7 @@ class _RegisterState extends State<Register> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      WidgetForm(
+                      WidgetForm( controller: customerName,
                         labelText: "Name :",
                         validator: (p0) {
                           if (p0?.isEmpty ?? true) {
@@ -102,7 +102,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 16,
                       ),
-                      WidgetForm(
+                      WidgetForm(controller: lastName,
                         labelText: 'Surname',
                         validator: (p0) {
                           if (p0?.isEmpty ?? true) {
@@ -115,7 +115,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 16,
                       ),
-                      WidgetForm(
+                      WidgetForm( controller: phonNumber,
                         labelText: 'Phon',
                         validator: (p0) {
                           if (p0?.isEmpty ?? true) {
@@ -128,7 +128,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 16,
                       ),
-                      WidgetForm(
+                      WidgetForm(controller: address,
                         labelText: 'Address',
                         validator: (p0) {
                           if (p0?.isEmpty ?? true) {
@@ -141,7 +141,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 16,
                       ),
-                      WidgetForm(
+                      WidgetForm( controller: email,
                         labelText: 'Email',
                         validator: (p0) {
                           if (p0?.isEmpty ?? true) {
@@ -154,7 +154,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 16,
                       ),
-                      WidgetForm(
+                      WidgetForm(controller: pass,
                         labelText: 'Password',
                         validator: (p0) {
                           if (p0?.isEmpty ?? true) {
@@ -179,8 +179,10 @@ class _RegisterState extends State<Register> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const Text('Location : '),
-                                      Text('ละติจูด : ${appController.positions.last.latitude} '),
-                                      Text('ลองติจูด : ${appController.positions.last.longitude}'),
+                                      Text(
+                                          'ละติจูด : ${appController.positions.last.latitude} '),
+                                      Text(
+                                          'ลองติจูด : ${appController.positions.last.longitude}'),
                                     ],
                                   ),
                                 );
@@ -199,7 +201,21 @@ class _RegisterState extends State<Register> {
         children: [
           WidgetButton(
               onPressed: () {
-                if (keyForm.currentState!.validate()) {}
+                if (keyForm.currentState!.validate()) {
+                  AppController appController = Get.put(AppController());
+
+
+
+                  AppServicr().processregister(
+                      name: customerName.text,
+                      serName: lastName.text,
+                      phoneNumber: phonNumber.text,
+                      address: address.text,
+                      email: email.text,
+                      password: pass.text,
+                      lat: appController.positions.last.latitude.toString() ,
+                      lng: appController.positions.last.longitude.toString(),);
+                }
               },
               text: 'สมัรสมาชิค'),
         ],
