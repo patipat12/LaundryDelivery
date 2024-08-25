@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:testdb/utility/app_controller.dart';
+import 'package:testdb/utility/app_dialog.dart';
+import 'package:testdb/utility/app_service.dart';
 import 'package:testdb/widgets/body_history.dart';
 import 'package:testdb/widgets/body_map.dart';
 import 'package:testdb/widgets/body_news.dart';
 import 'package:testdb/widgets/body_profile.dart';
+import 'package:testdb/widgets/widget_button.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({super.key});
@@ -18,7 +23,7 @@ class _MainHomeState extends State<MainHome> {
     const BodyMap(),
     BodyNews(),
     const BodyHistory(),
-    Body_profile(),
+    const BodyProfile(),
   ];
 
   var titles = <String>[
@@ -40,6 +45,9 @@ class _MainHomeState extends State<MainHome> {
   @override
   void initState() {
     super.initState();
+
+    AppServicr().findCuttentUserLogin();
+
     for (var i = 0; i < bodys.length; i++) {
       items.add(
           BottomNavigationBarItem(icon: Icon(iconDatas[i]), label: titles[i]));
@@ -55,6 +63,33 @@ class _MainHomeState extends State<MainHome> {
         return Scaffold(
           appBar: AppBar(
             title: Text(titles[appController.indexBody.value]),
+            actions: [
+              appController.indexBody.value == 3
+                  ? Container(
+                      margin: const EdgeInsets.only(right: 16),
+                      child: WidgetButton(
+                          onPressed: () {
+                            AppDialog().normalDialog(
+                                title: 'Confirm Singout',
+                                firstAction: WidgetButton(
+                                    type: GFButtonType.outline2x,
+                                    onPressed: () async{
+
+                                      await GetStorage().erase().then((value) {
+                                        Get.offAllNamed('/loginPage');
+                                      });
+
+
+
+
+
+                                    },
+                                    text: 'Confirm Singout'));
+                          },
+                          text: 'Singout'),
+                    )
+                  : const SizedBox(),
+            ],
           ),
           body: bodys[appController.indexBody.value],
           bottomNavigationBar: BottomNavigationBar(
