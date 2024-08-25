@@ -16,9 +16,9 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   var bodys = <Widget>[
     const BodyMap(),
-    const BodyNews(),
-    const BodyHistort(),
-    const BodyProfile(),
+    BodyNews(),
+    const BodyHistory(),
+    Body_profile(),
   ];
 
   var titles = <String>[

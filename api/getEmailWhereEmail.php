@@ -18,25 +18,30 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 				
+		$customerId = $_GET['customerId'];
+		$address = $_GET['address'];
+		$customerName = $_GET['customerName'];
+		$lastName = $_GET['lastName'];
+		$phoneNumber = $_GET['phoneNumber'];
+		$lat = $_GET['lat'];
+		$lng = $_GET['lng'];
 		$email = $_GET['email'];
+		$password = $_GET['password'];
+		
+		
+							
+		$sql = "SELECT `id`, `customerId`, `address`, `customerName`, `lastName`, `phoneNumber`, `lat`, `lng`, `status`, `email`, `password` FROM `few_user` WHERE 1";
 
-		$result = mysqli_query($link, "SELECT * FROM few_user WHERE email = '$email'");
+		$result = mysqli_query($link, $sql);
 
 		if ($result) {
+			echo "true";
+		} else {
+			echo "false";
+		}
 
-			while($row=mysqli_fetch_assoc($result)){
-			$output[]=$row;
-
-			}	// while
-
-			echo json_encode($output);
-
-		} //if
-
-	} else echo "Welcome Master UNG";	// if2
+	} else echo "Welcome few";
    
-}	// if1
-
-
+}
 	mysqli_close($link);
 ?>

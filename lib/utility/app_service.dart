@@ -6,8 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:intl/intl.dart';
 import 'package:testdb/models/user_model.dart';
-import 'package:testdb/screens/home.dart';
+
 import 'package:testdb/screens/main_home.dart';
 import 'package:testdb/utility/app_controller.dart';
 import 'package:testdb/utility/app_dialog.dart';
@@ -15,6 +16,29 @@ import 'package:testdb/widgets/widget_button.dart';
 
 class AppServicr {
   AppController appController = Get.put(AppController());
+
+  void calculateTotalWash(){
+    appController.total.value = (appController.optionWashClothes.value ? 40 : 0) ;
+    
+
+  }
+
+
+  String changDateTimeToString({required DateTime dateTime,String ? timeFormat}){
+
+    DateFormat dateFormat = DateFormat(timeFormat ?? 'dd / MMM / yy');
+    String result = dateFormat.format(dateTime);
+
+    return result;
+
+  }
+
+
+
+
+
+
+
   Future<void> processCheckLogin({
     required String email,
     required String password,
@@ -25,13 +49,10 @@ class AppServicr {
     await Dio().get(urlApiCheckLogin).then(
       (value) {
         if (value.toString() == 'null') {
-
-
           Get.snackbar('Email False', 'NO $email ในฐานข้อมูล',
               backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
         } else {}
         for (var element in json.decode(value.data)) {
-
           UserModel model = UserModel.fromMap(element);
 
           if (model.password == password) {
@@ -39,18 +60,10 @@ class AppServicr {
 
             Get.offAll(const MainHome());
           } else {
-
-            Get.snackbar('Password false','Please Tye Again Passsword',backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
-            
+            Get.snackbar('Password false', 'Please Tye Again Passsword',
+                backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
           }
-          
-
-
         }
-
-
-
-
       },
     );
   }

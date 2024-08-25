@@ -30,8 +30,8 @@ class _BodyMapState extends State<BodyMap> {
   }
 
   void createMarker() async {
-    double markerLat = 37.42329755413455;
-    double markerLng = -122.07851109901766;
+    double markerLat = 16.244241683714726 ;
+    double markerLng = 103.24954788263122;
 
     BitmapDescriptor bitmapDescriptor = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(size: Size(48, 48)), 'assets/images/icon64.png');
@@ -43,7 +43,8 @@ class _BodyMapState extends State<BodyMap> {
         icon: bitmapDescriptor,
         onTap: () {
           Get.to(ChooseProduct());
-        },);
+        },
+        );
         
 
     mapMarker[markerId] = marker;

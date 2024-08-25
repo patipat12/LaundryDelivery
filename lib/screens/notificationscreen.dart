@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
-
-
-
 class NotificationsScreen extends StatelessWidget {
   final List<NotificationItem> notifications = List.generate(
     10,
     (index) => NotificationItem(
       title: 'George Antonio',
-      message: 'Please make the presentation before Friday, the next meeting agenda will...',
+      message:
+          'Please make the presentation before Friday, the next meeting agenda will...',
       time: '2h Ago',
-      imageUrl: 'https://via.placeholder.com/150', // Replace with the actual image URL
+      imageUrl:
+          'https://via.placeholder.com/150', // Replace with the actual image URL
     ),
   );
 

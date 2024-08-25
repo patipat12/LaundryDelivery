@@ -30,7 +30,7 @@ if (isset($_GET)) {
 		
 		
 							
-		$sql = "INSERT INTO few_user`(id`, customerId, address, customerName, lastName, phoneNumber, lat, lng, status, email, password) VALUES (Null,'$customerId','$address','$customerName','$lastName','$phoneNumber','$lat','$lng','user',$email','$password',)";
+		$sql = "SELECT `id`, `customerId`, `address`, `customerName`, `lastName`, `phoneNumber`, `lat`, `lng`, `status`, `email`, `password` FROM `few_user` WHERE 1";
 
 		$result = mysqli_query($link, $sql);
 
@@ -40,7 +40,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome few1";
+	} else echo "Welcome few UserProfile222";
    
 }
 	mysqli_close($link);

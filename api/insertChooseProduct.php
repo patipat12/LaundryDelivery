@@ -18,19 +18,16 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 				
-		$customerId = $_GET['customerId'];
-		$address = $_GET['address'];
-		$customerName = $_GET['customerName'];
-		$lastName = $_GET['lastName'];
-		$phoneNumber = $_GET['phoneNumber'];
-		$lat = $_GET['lat'];
-		$lng = $_GET['lng'];
-		$email = $_GET['email'];
-		$password = $_GET['password'];
+		$OrderId = $_GET['OrderId'];
+		$ServiceId = $_GET['ServiceId'];
+		$Price = $_GET['Price'];
+		$Amount = $_GET['Amount'];
+		$TimeDelivery = $_GET['TimeDelivery'];
+		$Date = $_GET['Date'];
 		
 		
 							
-		$sql = "INSERT INTO few_user`(id`, customerId, address, customerName, lastName, phoneNumber, lat, lng, status, email, password) VALUES (Null,'$customerId','$address','$customerName','$lastName','$phoneNumber','$lat','$lng','user',$email','$password',)";
+		$sql = "INSERT INTO `few_chooseproduct`(`OrderId`, `ServiceId`, `Price`, `Amount`, `TimeDelivery`, `Date`, `Status`) VALUES (Null,'$OrderId','$ServiceId','$Price','$Amount','$TimeDelivery','$Date','$user')";
 
 		$result = mysqli_query($link, $sql);
 
@@ -40,7 +37,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome few1";
+	} else echo "Welcome few ChooserProduct222";
    
 }
 	mysqli_close($link);
