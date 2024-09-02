@@ -25,7 +25,6 @@ class AppServicr {
 
     if (appController.orderWashModels.isNotEmpty) {
       appController.orderWashModels.clear();
-      
     }
 
     for (var element in json.decode(result.data)) {
@@ -42,16 +41,13 @@ class AppServicr {
     String urlApi =
         'https://www.androidthai.in.th/fluttertraining/few/insertOrder.php?isAdd=true&refWash=${orderWashModel.refWash}&customerId=${orderWashModel.customerId}&dateStart=${orderWashModel.dateStart}&timeStart=${orderWashModel.timeStart}&dateEnd=${orderWashModel.dateEnd}&timeEnd=${orderWashModel.timeEnd}&dry=${orderWashModel.dry}&amountCloth=${orderWashModel.amountCloth}&detergen=${orderWashModel.detergen}&softener=${orderWashModel.softener}&total=${orderWashModel.total}&status=${orderWashModel.status}';
 
-    await Dio().get(urlApi).then((value)async {
+    await Dio().get(urlApi).then((value) async {
       await Get.deleteAll().then((value) {
-
         findCuttentUserLogin();
-        
-      Get.back();
-      Get.snackbar('Oeder Success', 'thank order');
-       
-      });
 
+        Get.back();
+        Get.snackbar('Oeder Success', 'thank order');
+      });
     });
   }
 
@@ -59,8 +55,15 @@ class AppServicr {
     var result = await GetStorage().read('data');
 
     if (result != null) {
-      UserModel model = UserModel.fromMap(result);
-      appController.currentUserModels.add(model);
+      String urlAPI =
+          'https://www.androidthai.in.th/fluttertraining/few/getEmailWhereEmail.php?isAdd=true&email=${result["email"]}';
+
+      var response = await Dio().get(urlAPI);
+
+      for (var element in json.decode(response.data)) {
+        UserModel model = UserModel.fromMap(element);
+        appController.currentUserModels.add(model);
+      }
     }
   }
 
