@@ -7,12 +7,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:testdb/models/order_wash_model.dart';
 import 'package:testdb/models/user_model.dart';
 import 'package:testdb/screens/admin_page.dart';
-
 import 'package:testdb/screens/main_home.dart';
 import 'package:testdb/utility/app_controller.dart';
 import 'package:testdb/utility/app_dialog.dart';
@@ -21,12 +19,14 @@ import 'package:testdb/widgets/widget_button.dart';
 class AppServicr {
   AppController appController = Get.put(AppController());
 
-  void processEditStatusByIdOrder({
+
+
+  Future<void> processEditStatusByIdOrder({
     required String id,
     required String Status,
     String? idAdminReceive,
     String? idAdminOrder,
-  }) async {
+  })  async {
     String urlAPI =
         'https://www.androidthai.in.th/fluttertraining/few/editStatusWhereId.php?isAdd=true&id=$id&status=$Status&idAdminReceive=$idAdminReceive&idAdminOrder=$idAdminOrder';
 
@@ -41,6 +41,20 @@ class AppServicr {
 
     String urlApi =
         'https://www.androidthai.in.th/fluttertraining/few/getUserWhereCustomerId.php?isAdd=true&customerId=$customerId';
+
+    var result = await Dio().get(urlApi);
+
+    for (var element in jsonDecode(result.data)) {
+      usermodel = UserModel.fromMap(element);
+    }
+    return usermodel;
+  }
+  Future<UserModel?> findUserModelFromId(
+      {required String id}) async {
+    UserModel? usermodel;
+
+    String urlApi =
+        'https://www.androidthai.in.th/fluttertraining/few/getUserWhereId.php?isAdd=true&id=$id';
 
     var result = await Dio().get(urlApi);
 

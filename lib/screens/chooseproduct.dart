@@ -24,8 +24,8 @@ class _ChooseProductState extends State<ChooseProduct> {
     super.initState();
 
     if (appController.currentUserModels.isEmpty) {
-                AppServicr().findCuttentUserLogin();
-              }
+      AppServicr().findCuttentUserLogin();
+    }
   }
 
   @override
@@ -186,28 +186,36 @@ class _ChooseProductState extends State<ChooseProduct> {
               Get.snackbar(
                   'จำนวนน้ำยาปรับผ้านุ่ม', 'กรุณาเลือกน้ำยาปรับผ้านุ่ม');
             } else {
-              
-
-
-
               OrderWashModel model = OrderWashModel(
                   id: '',
                   refWash: 'ref-${Random().nextInt(10000)}',
                   customerId: appController.currentUserModels.last.customerId,
-                  dateStart: AppServicr().changDateTimeToString(dateTime: appController.chooseStartWorkDateTimes.last),
-                  timeStart: AppServicr().changDateTimeToString(dateTime: appController.chooseStartWorkHHmm.last!,timeFormat: 'HH:mm'),
-                  dateEnd: AppServicr().changDateTimeToString(dateTime: appController.chooseEndWorkDateTimes.last),
-                  timeEnd: AppServicr().changDateTimeToString(dateTime: appController.chooseEndWorkHHmm.last!, timeFormat: 'HH:mm'),
+                  dateStart: AppServicr().changDateTimeToString(
+                      dateTime: appController.chooseStartWorkDateTimes.last),
+                  timeStart: AppServicr().changDateTimeToString(
+                      dateTime: appController.chooseStartWorkHHmm.last!,
+                      timeFormat: 'HH:mm'),
+                  dateEnd: AppServicr().changDateTimeToString(
+                      dateTime: appController.chooseEndWorkDateTimes.last),
+                  timeEnd: AppServicr().changDateTimeToString(
+                      dateTime: appController.chooseEndWorkHHmm.last!,
+                      timeFormat: 'HH:mm'),
                   dry: appController.optionDryClothes.value.toString(),
                   amountCloth: appController.ChooseAmountCloth.last.toString(),
                   detergen: appController.ChooseAmountDetergent.last.toString(),
-                  softener: appController.ChooseAmountSofeterner.last.toString(),
-                  total: '${(appController.optionWashClothes.value ? 40 : 0) + (appController.optionDryClothes.value ? 40 : 0) + (appController.ChooseAmountCloth.last != null ? 5 * appController.ChooseAmountCloth.last! : 0) + (appController.ChooseAmountDetergent.last != null ? 10 * appController.ChooseAmountDetergent.last! : 0) + (appController.ChooseAmountSofeterner.last != null ? 10 * appController.ChooseAmountSofeterner.last! : 0)}',
-                  status: 'Order', idAdminReceive: '', idAdminOrder: '');
+                  softener:
+                      appController.ChooseAmountSofeterner.last.toString(),
+                  total:
+                      '${(appController.optionWashClothes.value ? 40 : 0) + (appController.optionDryClothes.value ? 40 : 0) + (appController.ChooseAmountCloth.last != null ? 5 * appController.ChooseAmountCloth.last! : 0) + (appController.ChooseAmountDetergent.last != null ? 10 * appController.ChooseAmountDetergent.last! : 0) + (appController.ChooseAmountSofeterner.last != null ? 10 * appController.ChooseAmountSofeterner.last! : 0)}',
+                  status: 'Order',
+                  idAdminReceive: '',
+                  idAdminOrder: '',
+                  urlSlip: '',
+                  idAdminFinish: '');
 
-                  print('## model ---> ${model.toMap()}');
+              print('## model ---> ${model.toMap()}');
 
-                  await AppServicr().processInsertOrder(orderWashModel: model);
+              await AppServicr().processInsertOrder(orderWashModel: model);
             }
           },
           text: 'ORDER'),

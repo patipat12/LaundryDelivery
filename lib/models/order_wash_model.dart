@@ -17,6 +17,8 @@ class OrderWashModel {
   final String status;
   final String idAdminReceive;
   final String idAdminOrder;
+  final String idAdminFinish;
+  final String urlSlip;
   OrderWashModel({
     required this.id,
     required this.refWash,
@@ -33,6 +35,8 @@ class OrderWashModel {
     required this.status,
     required this.idAdminReceive,
     required this.idAdminOrder,
+    required this.idAdminFinish,
+    required this.urlSlip,
   });
 
   Map<String, dynamic> toMap() {
@@ -52,6 +56,8 @@ class OrderWashModel {
       'status': status,
       'idAdminReceive': idAdminReceive,
       'idAdminOrder': idAdminOrder,
+      'idAdminFinish': idAdminFinish,
+      'urlSlip': urlSlip,
     };
   }
 
@@ -72,6 +78,8 @@ class OrderWashModel {
       status: (map['status'] ?? '') as String,
       idAdminReceive: (map['idAdminReceive'] ?? '') as String,
       idAdminOrder: (map['idAdminOrder'] ?? '') as String,
+      idAdminFinish: (map['idAdminFinish'] ?? '') as String,
+      urlSlip: (map['urlSlip'] ?? '') as String,
     );
   }
 

@@ -34,7 +34,7 @@ if (isset($_GET)) {
 		
 		
 							
-		$sql = "INSERT INTO `few_wash`(`id`, `refWash`, `customerId`, `dateStart`, `timeStart`, `dateEnd`, `timeEnd`, `dry`, `amountCloth`, `detergen`, `softener`, `total`, `status`, `idAdminReceive`, `idAdminOrder`) VALUES (Null,'$refWash','$customerId','$dateStart','$timeStart','$dateEnd','$timeEnd','$dry','$amountCloth','$detergen','$softener','$total','$status', '', '' )";
+		$sql = "INSERT INTO `few_wash`(`id`, `refWash`, `customerId`, `dateStart`, `timeStart`, `dateEnd`, `timeEnd`, `dry`, `amountCloth`, `detergen`, `softener`, `total`, `status`, `idAdminReceive`, `idAdminOrder`, `urlSlip`) VALUES (Null,'$refWash','$customerId','$dateStart','$timeStart','$dateEnd','$timeEnd','$dry','$amountCloth','$detergen','$softener','$total','$status', '', '', '' )";
 
 		$result = mysqli_query($link, $sql);
 
