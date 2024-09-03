@@ -18,9 +18,9 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 				
-		$email = $_GET['email'];
+		$customerId = $_GET['customerId'];
 
-		$result = mysqli_query($link, "SELECT * FROM few_user WHERE email = '$email'");
+		$result = mysqli_query($link, "SELECT * FROM few_user WHERE customerId = '$customerId'");
 
 		if ($result) {
 

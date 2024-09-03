@@ -7,9 +7,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:testdb/models/order_wash_model.dart';
 import 'package:testdb/models/user_model.dart';
+import 'package:testdb/screens/admin_page.dart';
 
 import 'package:testdb/screens/main_home.dart';
 import 'package:testdb/utility/app_controller.dart';
@@ -18,6 +20,36 @@ import 'package:testdb/widgets/widget_button.dart';
 
 class AppServicr {
   AppController appController = Get.put(AppController());
+
+  void processEditStatusByIdOrder({
+    required String id,
+    required String Status,
+    String? idAdminReceive,
+    String? idAdminOrder,
+  }) async {
+    String urlAPI =
+        'https://www.androidthai.in.th/fluttertraining/few/editStatusWhereId.php?isAdd=true&id=$id&status=$Status&idAdminReceive=$idAdminReceive&idAdminOrder=$idAdminOrder';
+
+    await Dio().get(urlAPI).then((value) {
+      Get.back();
+    });
+  }
+
+  Future<UserModel?> findUserModelFromCustomerId(
+      {required String customerId}) async {
+    UserModel? usermodel;
+
+    String urlApi =
+        'https://www.androidthai.in.th/fluttertraining/few/getUserWhereCustomerId.php?isAdd=true&customerId=$customerId';
+
+    var result = await Dio().get(urlApi);
+
+    for (var element in jsonDecode(result.data)) {
+      usermodel = UserModel.fromMap(element);
+    }
+    return usermodel;
+  }
+
   Future<void> readAllOrder() async {
     String urlApi =
         'https://www.androidthai.in.th/fluttertraining/few/getAllOrder.php';
@@ -33,6 +65,22 @@ class AppServicr {
       if (model.customerId == appController.currentUserModels.last.customerId) {
         appController.orderWashModels.add(model);
       }
+    }
+  }
+
+  Future<void> readAllOrderForAdmin() async {
+    String urlApi =
+        'https://www.androidthai.in.th/fluttertraining/few/getAllOrder.php';
+    var result = await Dio().get(urlApi);
+
+    if (appController.orderWashModels.isNotEmpty) {
+      appController.orderWashModels.clear();
+    }
+
+    for (var element in json.decode(result.data)) {
+      OrderWashModel model = OrderWashModel.fromMap(element);
+
+      appController.orderWashModels.add(model);
     }
   }
 
@@ -91,12 +139,21 @@ class AppServicr {
         for (var element in json.decode(value.data)) {
           UserModel model = UserModel.fromMap(element);
 
-          if (model.password == password) {
-            //password true
+          //password true
 
-            await GetStorage().write('data', model.toMap()).then((value) {
-              Get.offAll(const MainHome());
-            });
+          if (model.password == password) {
+            if ((model.email == 'admin1@abc.com') ||
+                (model.email == 'admin2@abc.com') ||
+                (model.email == 'admin3@abc.com')) {
+              //admin
+              Get.offAll(AddminPage(userModel: model));
+            } else {
+              await GetStorage().write('data', model.toMap()).then(
+                (value) {
+                  Get.offAll(const MainHome());
+                },
+              );
+            }
           } else {
             Get.snackbar('Password false', 'Please Tye Again Passsword',
                 backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);

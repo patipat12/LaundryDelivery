@@ -27,5 +27,6 @@ class AppController extends GetxController {
   RxList <UserModel> currentUserModels = <UserModel>[].obs;
 
   RxList <OrderWashModel>orderWashModels = <OrderWashModel>[].obs;
+  RxBool receive = false.obs;
   
   }

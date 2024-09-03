@@ -15,22 +15,21 @@ if (!$link->set_charset("utf8")) {
     exit();
 	}
 
+
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
-				
-		$customerId = $_GET['customerId'];
-		$address = $_GET['address'];
-		$customerName = $_GET['customerName'];
-		$lastName = $_GET['lastName'];
-		$phoneNumber = $_GET['phoneNumber'];
-		$lat = $_GET['lat'];
-		$lng = $_GET['lng'];
-		$email = $_GET['email'];
-		$password = $_GET['password'];
+			
+		$id = $_GET['id'];	
+		$status = $_GET['status'];	
+		$idAdminReceive = $_GET['idAdminReceive'];	
+		$idAdminOrder = $_GET['idAdminOrder'];	
+
+		
+		
 		
 		
 							
-		$sql = "SELECT `id`, `customerId`, `address`, `customerName`, `lastName`, `phoneNumber`, `lat`, `lng`, `status`, `email`, `password` FROM `few_user` WHERE 1";
+		$sql = "UPDATE `few_wash` SET `status` = '$status',`idAdminReceive` = '$idAdminReceive',`idAdminOrder` = '$idAdminOrder' WHERE id = '$id'";
 
 		$result = mysqli_query($link, $sql);
 
@@ -40,8 +39,9 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome few UserProfile222";
+	} else echo "Welcome Master UNG";
    
 }
+
 	mysqli_close($link);
 ?>
