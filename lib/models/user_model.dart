@@ -9,6 +9,7 @@ class UserModel {
   final String lastName;
   final String phoneNumber;
   final String lat;
+   final String lng;
   final String status;
   final String email;
   final String password;
@@ -20,6 +21,7 @@ class UserModel {
     required this.lastName,
     required this.phoneNumber,
     required this.lat,
+    required this.lng,
     required this.status,
     required this.email,
     required this.password,
@@ -34,6 +36,7 @@ class UserModel {
       'lastName': lastName,
       'phoneNumber': phoneNumber,
       'lat': lat,
+      'lng': lng,
       'status': status,
       'email': email,
       'password': password,
@@ -49,6 +52,7 @@ class UserModel {
       lastName: (map['lastName'] ?? '') as String,
       phoneNumber: (map['phoneNumber'] ?? '') as String,
       lat: (map['lat'] ?? '') as String,
+      lng: (map['lng'] ?? '') as String,
       status: (map['status'] ?? '') as String,
       email: (map['email'] ?? '') as String,
       password: (map['password'] ?? '') as String,

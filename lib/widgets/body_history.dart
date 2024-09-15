@@ -79,70 +79,88 @@ class _BodyHistoryState extends State<BodyHistory> {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w200),
                       ),
-
-
-
-
                       appController.orderWashModels[index].status == 'Order'
                           ? Text('รอรับผ้าก่อน แล้วจ่าย พร้อมเพยื ',
-                              style: TextStyle(fontSize: 10,color: GFColors.DANGER))
-                          : appController.orderWashModels[index].status == 'Receive' ? Image.network(
-                              'https://promptpay.io/0928133081/${appController.orderWashModels[index].total}') : Image.network(appController.orderWashModels[index].urlSlip),
+                              style: TextStyle(
+                                  fontSize: 10, color: GFColors.DANGER))
+                          : appController.orderWashModels[index].status ==
+                                  'Receive'
+                              ? Image.network(
+                                  'https://promptpay.io/0928133081/${appController.orderWashModels[index].total}')
+                              : Image.network(
+                                  appController.orderWashModels[index].urlSlip),
                     ],
-
-
-
-
                   ),
                   firstAction: appController.orderWashModels[index].status ==
                           'Order'
-                      ? null
-                      : appController.orderWashModels[index].status == 'Receive' ?  WidgetButton(
+                      ? WidgetButton(
                           onPressed: () async {
-                            String url =
-                                'https://promptpay.io/0928133081/${appController.orderWashModels[index].total}';
+                            String urlApi =
+                                'https://www.androidthai.in.th/fluttertraining/few/deleteWhereId.php?isAdd=true&id=${appController.orderWashModels[index].id}';
 
-                            var response = await Dio().get(url,
-                                options:
-                                    Options(responseType: ResponseType.bytes));
-
-                            final result = await ImageGallerySaver.saveImage(
-                                Uint8List.fromList(response.data),
-                                quality: 60,
-                                name: 'Prompay');
-
-                            if (result['isSuccess']) {
+                            await Dio().get(urlApi).then((value) {
                               Get.back();
-                              Get.snackbar('โหลด สำเร้จ', 'เปิดแอพธนาคารแสกน ');
-                            }
+                              AppServicr().readAllOrder();
+                            });
                           },
-                          text: 'โหลดQrcodr',
-                          type: GFButtonType.outline2x,
-                        ) : null,
-                  thirdAction:
-                      appController.orderWashModels[index].status == 'Order'
-                          ? null
-                          : appController.orderWashModels[index].status == 'Receive' ? WidgetButton(
+                          text: 'ยกเลิก',
+                          color: GFColors.DANGER,
+                        )
+                      : appController.orderWashModels[index].status == 'Receive'
+                          ? WidgetButton(
+                              onPressed: () async {
+                                String url =
+                                    'https://promptpay.io/0928133081/${appController.orderWashModels[index].total}';
+
+                                var response = await Dio().get(url,
+                                    options: Options(
+                                        responseType: ResponseType.bytes));
+
+                                final result =
+                                    await ImageGallerySaver.saveImage(
+                                        Uint8List.fromList(response.data),
+                                        quality: 60,
+                                        name: 'Prompay');
+
+                                if (result['isSuccess']) {
+                                  Get.back();
+                                  Get.snackbar(
+                                      'โหลด สำเร้จ', 'เปิดแอพธนาคารแสกน ');
+                                }
+                              },
+                              text: 'โหลดQrcodr',
+                              type: GFButtonType.outline2x,
+                            )
+                          : null,
+                  thirdAction: appController.orderWashModels[index].status ==
+                          'Order'
+                      ? null
+                      : appController.orderWashModels[index].status == 'Receive'
+                          ? WidgetButton(
                               onPressed: () async {
                                 await AppTakePhoto().uploadImage().then(
-                                  (value)async {
+                                  (value) async {
                                     String urlSlip = value;
                                     print('##3sep urlSlip --> $urlSlip');
 
                                     String urlEditUrlSlip =
-                                        'https://www.androidthai.in.th/fluttertraining/few/editUrlSlipWhereId.php?isAdd=true&id=${appController.orderWashModels[index].id}&status=payment&urlSlip=$urlSlip';
+                                        'https://www.androidthai.in.th/fluttertraining/few/editUrlSlipWhereId.php?isAdd=true&id=${appController.orderWashModels[index].id}&status=Payment&urlSlip=$urlSlip';
 
-                                              await Dio().get(urlEditUrlSlip).then((value) {
-                                                Get.back();
-                                                AppServicr().readAllOrder();
-                                              });
-                                        
+                                    if (urlSlip.isNotEmpty) {
+                                      await Dio().get(urlEditUrlSlip).then(
+                                        (value) {
+                                          Get.back();
+                                          AppServicr().readAllOrder();
+                                        },
+                                      );
+                                    }
                                   },
                                 );
                               },
                               text: 'อัพโหลดสลีป',
                               type: GFButtonType.outline2x,
-                            ) : null,
+                            )
+                          : null,
                 );
               },
               child: Container(
@@ -165,7 +183,15 @@ class _BodyHistoryState extends State<BodyHistory> {
                                   appController.orderWashModels[index].status ==
                                           'Order'
                                       ? const Color.fromARGB(255, 125, 214, 128)
-                                      : appController.orderWashModels[index].status == 'Receive' ? Colors.amber : Color.fromARGB(255, 225, 140, 168)),
+                                      : appController.orderWashModels[index]
+                                                  .status ==
+                                              'Receive'
+                                          ? Colors.amber
+                                          : appController.orderWashModels[index]
+                                                      .status ==
+                                                  'Payment'
+                                              ? Colors.pink.shade100
+                                              : Colors.blue),
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                               ' Status :  ${appController.orderWashModels[index].status}'),

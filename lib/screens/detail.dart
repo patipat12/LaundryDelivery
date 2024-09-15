@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:testdb/models/order_wash_model.dart';
 import 'package:testdb/models/user_model.dart';
 import 'package:testdb/utility/app_controller.dart';
@@ -56,6 +57,13 @@ class _DetailOrderState extends State<DetailOrder> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 UserModel model = snapshot.data!;
+
+                Set<Marker> customerMarker = <Marker>[
+                  Marker(
+                    markerId: MarkerId(model.id),
+                    position: LatLng(double.parse(model.lat), double.parse(model.lng))
+                  )
+                ].toSet();
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +77,22 @@ class _DetailOrderState extends State<DetailOrder> {
                       ],
                     ),
                     Text('ที่อยุ่ : ${model.address}'),
-                    Text('ที่อยุ่ : ${model.phoneNumber}')
+                    Text('ที่อยุ่ : ${model.phoneNumber}'),
+                    ((widget.orderWashModel.status == 'Order') ||
+                            (widget.orderWashModel.status == 'Receive' ||
+                                (widget.orderWashModel.status == 'Payment')))
+                        ? SizedBox(
+                            width: Get.width,
+                            height: Get.height,
+                            child: GoogleMap(
+                              initialCameraPosition: CameraPosition(
+                                  target: LatLng(double.parse(model.lat),
+                                      double.parse(model.lng)),
+                                  zoom: 16),
+                              markers: customerMarker,
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 );
               } else {
@@ -78,7 +101,8 @@ class _DetailOrderState extends State<DetailOrder> {
             },
           ),
           const Divider(),
-          ((widget.orderWashModel.status == 'Payment') || (widget.orderWashModel.status == 'Finish')) 
+          ((widget.orderWashModel.status == 'Payment') ||
+                  (widget.orderWashModel.status == 'Finish'))
               ? Image.network(widget.orderWashModel.urlSlip)
               : const SizedBox(),
         ],

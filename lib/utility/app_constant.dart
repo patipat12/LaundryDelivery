@@ -1,25 +1,28 @@
 class AppConstant {
+  static Map<String, dynamic> ownerShopLogin = {
+    'email': 'admin@abc.com',
+     'password': '123456',
+  };
 
-  static var amountCloth = <int>[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,];
+  static var amountCloth = <int>[
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+  ];
 
-  
-  static var amountOption = <int>[1,2,3,4,5];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  static var amountOption = <int>[1, 2, 3, 4, 5];
 
   static var dateTimes = <DateTime>[
     DateTime(
