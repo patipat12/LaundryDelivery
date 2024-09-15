@@ -7,6 +7,7 @@ import 'package:testdb/screens/detail.dart';
 import 'package:testdb/utility/app_constant.dart';
 import 'package:testdb/utility/app_controller.dart';
 import 'package:testdb/utility/app_service.dart';
+import 'package:testdb/widgets/widget_singout.dart';
 
 class AddminPage extends StatefulWidget {
   const AddminPage({
@@ -33,7 +34,7 @@ class _AddminPageState extends State<AddminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('เช็คเสื้อผ้าลุกค้า โดย ${widget.userModel.customerName}'),
+        title: Text('officer โดย ${widget.userModel.customerName}'),actions: [const WidgetSignOut()],
       ),
       body: Obx(() => appcontroller.orderWashModels.isEmpty
           ? const Center(child: CircularProgressIndicator())

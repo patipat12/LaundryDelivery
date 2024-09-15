@@ -156,9 +156,7 @@ class AppServicr {
           //password true
 
           if (model.password == password) {
-            if ((model.email == 'admin1@abc.com') ||
-                (model.email == 'admin2@abc.com') ||
-                (model.email == 'admin3@abc.com')) {
+            if (model.status == 'officer') {
               //admin
               Get.offAll(AddminPage(userModel: model));
             } else {
@@ -186,6 +184,7 @@ class AppServicr {
     required String password,
     required String lat,
     required String lng,
+     String? status,
   }) async {
     String urlApiCheckEmail =
         'https://www.androidthai.in.th/fluttertraining/few/getEmailWhereEmail.php?isAdd=true&email=$email';
@@ -196,8 +195,10 @@ class AppServicr {
       //ไม่ซ้ำ
       String customerId = 'cus-${Random().nextInt(1000)}';
 
+      String myStatus = status ?? 'user';
+
       String urlAppRegister =
-          'https://www.androidthai.in.th/fluttertraining/few/insertUser.php?isAdd=true&customerId=$customerId&address=$address&customerName=$name&lastName=$serName&phoneNumber=$phoneNumber&lat=$lat&lng=$lng&email=$email&password=$password';
+          'https://www.androidthai.in.th/fluttertraining/few/insertUser.php?isAdd=true&customerId=$customerId&address=$address&customerName=$name&lastName=$serName&phoneNumber=$phoneNumber&lat=$lat&lng=$lng&email=$email&password=$password&status=$myStatus';
 
       await Dio().get(urlAppRegister).then(
         (value) {
@@ -272,5 +273,34 @@ class AppServicr {
               );
             },
             text: 'โปรดอนุญาติแชร์พิกัด'));
+  }
+
+  Future<List<UserModel>> processReadUserWhereStatus({required String status }) async {
+
+    String urlAPI = 'https://www.androidthai.in.th/fluttertraining/few/getUserWhereStatus.php?isAdd=true&status=$status';
+    var userModels = <UserModel>[];
+
+    var result = await Dio().get(urlAPI);
+    if (result.toString() != 'null') {
+
+
+      for (var element in json.decode(result.data)) {
+
+        UserModel model = UserModel.fromMap(element);
+        userModels.add(model);
+        
+      }
+      
+    }
+
+
+
+
+
+
+
+     return userModels;
+    
+
   }
 }

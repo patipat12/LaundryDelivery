@@ -1,15 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:testdb/utility/app_controller.dart';
 import 'package:testdb/utility/app_service.dart';
 import 'package:testdb/widgets/widget_button.dart';
 import 'package:testdb/widgets/widget_form.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  const Register({
+    Key? key,
+    this.status,
+  }) : super(key: key);
+
+  final String? status;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -214,7 +221,10 @@ class _RegisterState extends State<Register> {
                       email: email.text,
                       password: pass.text,
                       lat: appController.positions.last.latitude.toString() ,
-                      lng: appController.positions.last.longitude.toString(),);
+                      lng: appController.positions.last.longitude.toString(),
+                      status : widget.status,
+                      
+                      );
                 }
               },
               text: 'สมัรสมาชิค'),
