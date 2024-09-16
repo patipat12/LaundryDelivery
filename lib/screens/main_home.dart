@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:testdb/screens/Chat_With_Admin.dart';
 import 'package:testdb/utility/app_controller.dart';
 import 'package:testdb/utility/app_dialog.dart';
 import 'package:testdb/utility/app_service.dart';
@@ -73,22 +74,25 @@ class _MainHomeState extends State<MainHome> {
                                 title: 'Confirm Singout',
                                 firstAction: WidgetButton(
                                     type: GFButtonType.outline2x,
-                                    onPressed: () async{
-
+                                    onPressed: () async {
                                       await GetStorage().erase().then((value) {
                                         Get.offAllNamed('/loginPage');
                                       });
-
-
-
-
-
                                     },
                                     text: 'Confirm Singout'));
                           },
                           text: 'Singout'),
                     )
-                  : const SizedBox(),
+                  : appController.indexBody.value == 0
+                      ? Container(margin: const EdgeInsets.only(right: 16),
+                        child: WidgetButton(onPressed: () {
+                          
+                          Get.to(const ChatWithAdmin());
+
+
+
+                        }, text: 'chat Wiht Admin'),)
+                      : const SizedBox(),
             ],
           ),
           body: bodys[appController.indexBody.value],
