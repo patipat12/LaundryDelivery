@@ -19,14 +19,39 @@ import 'package:testdb/widgets/widget_button.dart';
 class AppServicr {
   AppController appController = Get.put(AppController());
 
+  int calculateTotal({required List<OrderWashModel> orderWashModels}) {
+    int total = 0;
+    for (var element in orderWashModels) {
+      total = total + int.parse(element.total.trim());
+    }
+    return total;
+  }
 
+  Future<List<OrderWashModel>> processReadOrderWhereStatus(
+      {required String status}) async {
+    String urlAPI =
+        'https://www.androidthai.in.th/fluttertraining/few/getOrderWhereStatus.php?isAdd=true&status=$status';
+
+    var orderWashModels = <OrderWashModel>[];
+
+    var result = await Dio().get(urlAPI);
+
+    if (result.toString() != 'null') {
+      for (var element in json.decode(result.data)) {
+        OrderWashModel model = OrderWashModel.fromMap(element);
+        orderWashModels.add(model);
+      }
+    }
+
+    return orderWashModels;
+  }
 
   Future<void> processEditStatusByIdOrder({
     required String id,
     required String Status,
     String? idAdminReceive,
     String? idAdminOrder,
-  })  async {
+  }) async {
     String urlAPI =
         'https://www.androidthai.in.th/fluttertraining/few/editStatusWhereId.php?isAdd=true&id=$id&status=$Status&idAdminReceive=$idAdminReceive&idAdminOrder=$idAdminOrder';
 
@@ -49,8 +74,8 @@ class AppServicr {
     }
     return usermodel;
   }
-  Future<UserModel?> findUserModelFromId(
-      {required String id}) async {
+
+  Future<UserModel?> findUserModelFromId({required String id}) async {
     UserModel? usermodel;
 
     String urlApi =
@@ -184,7 +209,7 @@ class AppServicr {
     required String password,
     required String lat,
     required String lng,
-     String? status,
+    String? status,
   }) async {
     String urlApiCheckEmail =
         'https://www.androidthai.in.th/fluttertraining/few/getEmailWhereEmail.php?isAdd=true&email=$email';
@@ -275,32 +300,20 @@ class AppServicr {
             text: 'โปรดอนุญาติแชร์พิกัด'));
   }
 
-  Future<List<UserModel>> processReadUserWhereStatus({required String status }) async {
-
-    String urlAPI = 'https://www.androidthai.in.th/fluttertraining/few/getUserWhereStatus.php?isAdd=true&status=$status';
+  Future<List<UserModel>> processReadUserWhereStatus(
+      {required String status}) async {
+    String urlAPI =
+        'https://www.androidthai.in.th/fluttertraining/few/getUserWhereStatus.php?isAdd=true&status=$status';
     var userModels = <UserModel>[];
 
     var result = await Dio().get(urlAPI);
     if (result.toString() != 'null') {
-
-
       for (var element in json.decode(result.data)) {
-
         UserModel model = UserModel.fromMap(element);
         userModels.add(model);
-        
       }
-      
     }
 
-
-
-
-
-
-
-     return userModels;
-    
-
+    return userModels;
   }
 }
